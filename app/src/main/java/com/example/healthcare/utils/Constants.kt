@@ -28,7 +28,7 @@ object Constants {
           var doctorlist1=ArrayList<Doctor>()
          // doctorlist1=API().getdoctorslist()
           //print("${doctorlist1[0].name}")
-         doctorlist1.add(Doctor("Faiz Kauzer","Tumor","dkl","xyz","xyz","hugh"))
+         //doctorlist1.add(Doctor("Faiz Kauzer","Tumor","dkl","xyz","xyz","hugh"))
 
 
           return  doctorlist1

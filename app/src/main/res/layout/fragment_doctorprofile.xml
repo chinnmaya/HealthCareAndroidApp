@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,13 +16,15 @@
 
     <LinearLayout
        android:layout_width="match_parent"
-       android:layout_height="0dp"
+       android:layout_height="400dp"
        android:layout_gravity="center"
        android:gravity="center"
        android:background="@drawable/curvell"
+
+
         android:orientation="vertical"
 
-       android:layout_weight="1">
+       android:layout_weight="2">
        <LinearLayout
            android:layout_width="wrap_content"
            android:layout_height="wrap_content">
@@ -26,10 +34,10 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_image"
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:padding="10dp"
             android:layout_marginTop="10dp"
-            android:layout_height="100dp"
+            android:layout_height="150dp"
 
             app:civ_border_width="2dp"
             app:civ_circle_background_color="@color/white"
@@ -39,13 +47,47 @@
             android:src="@drawable/profile"
             />
         <TextView
+            android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textColor="@color/white"
-            android:textSize="20dp"
-            android:text="DR.Kar"
+            android:textSize="25dp"
+            android:text="DR . Keiriy Kar"
+            android:fontFamily="@font/fontt"
             />
+        <TextView
+            android:id="@+id/specialist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:padding="10dp"
+
+            android:text="Tumor"
+            android:fontFamily="@font/fontt"
+            />
+        <TextView
+            android:id="@+id/visit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:padding="5dp"
+            android:text="Avaliable for home visit"
+            android:fontFamily="@font/fontt"
+            />
+
+
+        <ImageView
+            android:id="@+id/email"
+            android:foreground="?attr/selectableItemBackground"
+           android:layout_width="55dp"
+           android:layout_height="55dp"
+           android:src="@drawable/ic_email"
+           android:padding="10dp"
+           />
 
 
 
@@ -53,10 +95,115 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="2"/>
+        android:text="About the Doctor"
+        android:fontFamily="@font/fontt"
+        android:padding="20dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:text="I am a 30 yr experience in tumor i worked in Aiim for last 5 yr,i have cured 50 patients from tumor"
+
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+
+
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:id="@+id/about"
+        android:layout_weight="0"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_location_on_24"/>
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:padding="2dp"
+            android:text="Dhenkanal,parjang,odisha"
+            android:textColor="@color/black"
+            />
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Avaliable Slots"
+        android:fontFamily="@font/fontt"
+        android:padding="20dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:layout_weight="0"
+        />
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_weight="0.5"
+        android:padding="20dp"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:foreground="?attr/selectableItemBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/list_shape">
+            <TextView
+                android:id="@+id/tv_slot1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tumor Detection"
+
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:padding="15dp"/>
+            <TextView
+                android:id="@+id/tv_slot2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tumor Detection"
+
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:padding="15dp"/>
+            <TextView
+                android:id="@+id/tv_slot3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tumor Detection"
+
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:padding="15dp"/>
+            <TextView
+                android:id="@+id/tv_slot4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tumor Detection"
+
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:padding="15dp"/>
+        </LinearLayout>
+
+
+    </HorizontalScrollView>
+
 
 
     <!-- TODO: Update blank fragment layout -->
 
 
 </LinearLayout>
+</ScrollView>

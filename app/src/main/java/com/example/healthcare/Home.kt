@@ -80,9 +80,10 @@ class Home : Fragment() {
 
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-        val toolbar = view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
-        (activity as AppCompatActivity).setSupportActionBar(toolbar)
+
+
         showProgressDialog("wait")
+
         API().getdoctorslist(requireContext()) { doctorlist ->
             if (doctorlist != null) {
                 Toast.makeText(context,doctorlist.size.toString(),Toast.LENGTH_SHORT).show()
@@ -93,7 +94,14 @@ class Home : Fragment() {
 
                 gridView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
                     // handle item click event
-                    changefragment(Doctorprofile())
+                    val doctor:Doctor=doctorlist.get(position)
+                    Toast.makeText(context,doctor.name,Toast.LENGTH_SHORT).show()
+                    val bundle = Bundle().apply {
+                        putSerializable("doctor", doctor)
+                    }
+                    val fragment = Doctorprofile()
+                    fragment.arguments = bundle
+                    changefragment(fragment)
                 }
 
             } else {
@@ -169,6 +177,7 @@ class Home : Fragment() {
     }
 
 
+    //setting the wish
     @RequiresApi(Build.VERSION_CODES.O)
     fun wissh(){
         val currentTime = LocalTime.now()
