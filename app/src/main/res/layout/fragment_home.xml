@@ -79,7 +79,7 @@
                        android:layout_height="0dp"
                        android:layout_weight="1"
                        android:padding="5dp"
-                       android:text="Clinc Visit"
+                       android:text="Clinic Visit"
                        android:textColor="@color/black"
                        android:textStyle="bold"
                        android:textSize="15dp"
@@ -157,13 +157,78 @@
             android:textSize="20dp"
             android:textColor="@color/black"
             android:textStyle="bold"
+
             />
+    <!--
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="70dp"
             tools:listitem="@layout/list_diease"
             android:orientation="horizontal"
-            android:id="@+id/recylerView"/>
+            android:id="@+id/recylerView"/>-->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+        <LinearLayout
+            android:id="@+id/lld1"
+            android:foreground="?attr/selectableItemBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/list_shape">
+            <TextView
+                android:id="@+id/tv_diseas1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tumor Detection"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:padding="15dp"/>
+        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/lld2"
+                android:foreground="?attr/selectableItemBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+
+                android:background="@drawable/list_shape">
+                <TextView
+
+                    android:id="@+id/tv_diseas2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Phenumonia Detection"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:padding="15dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/lld3"
+                android:foreground="?attr/selectableItemBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+
+                android:background="@drawable/list_shape">
+                <TextView
+
+                    android:id="@+id/tv_diseas3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Breast Cancer Detection"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:padding="15dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </HorizontalScrollView>
         <TextView
             android:padding="10dp"
             android:textSize="20sp"

@@ -2,6 +2,7 @@ package com.example.healthcare
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,18 +12,12 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.GridView
 import android.widget.Toast
-import android.widget.Toolbar
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.healthcare.APICalls.API
-import com.example.healthcare.adapter.DiseaseAdapter
+import com.example.healthcare.Activity.DieaseDetectionActivity
 import com.example.healthcare.adapter.GridLayoutAdapter
 import com.example.healthcare.fragments.Doctorprofile
 import com.example.healthcare.models.Doctor
-import com.example.healthcare.utils.BaseActivity
-import com.example.healthcare.utils.Constants
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.dialog_progress.*
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -149,29 +144,55 @@ class Home : Fragment() {
         //showProgressDialog("wait")
 
        // hideProgressDialog()
-
-
+        //Clicn visit
         ll_clicn.setOnClickListener {
-
-
-
-
             Toast.makeText(context,"Click",Toast.LENGTH_SHORT).show()
         }
-        val employelist=Constants.getdiseaseList()
+       // val employelist=Constants.getdiseaseList()
+      //  val fragmentManager = requireActivity().supportFragmentManager
 
         // Assign employeelist to ItemAdapter
-        val itemAdapter= DiseaseAdapter(employelist)
+        //val itemAdapter= DiseaseAdapter(employelist,fragmentManager)
 
         // Set the LayoutManager that
         // this RecyclerView will use.
-        val recyclerView: RecyclerView =view.findViewById(R.id.recylerView)
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        recyclerView.layoutManager = layoutManager
+        //val recyclerView: RecyclerView =view.findViewById(R.id.recylerView)
+        //val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        //recyclerView.layoutManager = layoutManager
 
         // adapter instance is set to the
         // recyclerview to inflate the items.
-        recyclerView.adapter = itemAdapter
+       // recyclerView.adapter = itemAdapter
+        // Applying OnClickListener to our Adapter
+        //Applying onclicklister to every diease
+        lld1.setOnClickListener {
+            gotoDieaseActivity(1)
+
+        }
+        lld2.setOnClickListener {
+            gotoDieaseActivity(2)
+
+        }
+        lld3.setOnClickListener {
+            gotoDieaseActivity(3)
+
+        }
+
+
+    }
+    //going yto dieaseDetectionFreagment
+    fun gotoDieaseActivity(dieasenumber:Int){
+       // val bundle = Bundle()
+        //bundle.putInt("number", dieasenumber)
+
+        //val fragment = DieaseDetectionFragment()
+        //fragment.arguments = bundle
+
+        //val fragmentManager = requireActivity().supportFragmentManager
+        //fragmentManager.beginTransaction().replace(R.id.frame_layout, fragment).commit()
+        val intent = Intent(activity, DieaseDetectionActivity::class.java)
+        intent.putExtra("number", dieasenumber)
+        startActivity(intent)
 
 
     }
