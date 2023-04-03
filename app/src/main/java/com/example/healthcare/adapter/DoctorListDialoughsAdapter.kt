@@ -1,10 +1,15 @@
 package com.example.healthcare.adapter
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.healthcare.R
 import com.example.healthcare.models.Doctor
@@ -44,6 +49,12 @@ class DoctorListDialoughsAdapter(
                     onItemClickListener!!.onClick(position, item)
                 }
             }
+            holder.email.setOnClickListener {
+
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("mailto:${item.email}"))
+                context.startActivity(intent)
+
+            }
         }
     }
 
@@ -53,6 +64,8 @@ class DoctorListDialoughsAdapter(
 
     private class MyViewHolder(view: View) : RecyclerView.ViewHolder(view){
         val name = view.findViewById<TextView>(R.id.dname)
+        val email=view.findViewById<ImageView>(R.id.demail)
+        val profile=view.findViewById<ImageView>(R.id.profile)
         val specialist=view.findViewById<TextView>(R.id.dspecialist)
     }
 

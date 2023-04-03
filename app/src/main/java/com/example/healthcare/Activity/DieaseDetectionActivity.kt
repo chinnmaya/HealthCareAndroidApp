@@ -1,7 +1,9 @@
 package com.example.healthcare.Activity
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,6 +14,8 @@ import com.example.healthcare.APICalls.API
 import com.example.healthcare.R
 import com.example.healthcare.dialoughs.DoctorsListDialog
 import com.example.healthcare.models.Doctor
+import com.example.healthcare.models.User
+import com.example.healthcare.utils.BaseActivity
 import com.example.healthcare.utils.Constants.doctorlist
 import kotlinx.android.synthetic.main.activity_diease_detection.*
 import kotlinx.android.synthetic.main.dialog_list.*
@@ -23,36 +27,63 @@ import org.tensorflow.lite.support.image.ops.ResizeOp
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.nio.channels.FileChannel
 
-class DieaseDetectionActivity : AppCompatActivity() {
+class DieaseDetectionActivity : BaseActivity() {
 
 
     lateinit var bitmap: Bitmap
+    private lateinit var mSharedPrefernces: SharedPreferences
+    lateinit var mUser: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_diease_detection)
         val data = intent.getIntExtra("number",1)
+        mSharedPrefernces = this.getSharedPreferences("user", Context.MODE_PRIVATE)
+        var email=mSharedPrefernces.getString("email","")
+        API().getUserbyId(email!!){user->
+            mUser=user
+        }
+
+
         predict.setOnClickListener {
-            if(bitmap!=null){
-                if(data==1) {
-                    detectmodel1("model") { dieasename ->
-                        doctorsListDialog(dieasename)
-
-                    }
-
-
-
-                }
-                if(data==2){
-                    detectmodel2("model1"){dieasename->
-                        doctorsListDialog(dieasename)
-
-                    }
-                }
-                //doctorsListDialog()
-
+            showProgressDialog("wait..")
+            API().getUserbyId(email!!){user->
+                mUser=user
             }
 
+            if (email != null) {
+                try {
+                    API().getMoney(email) { money ->
+                        if (money < 20) {
+                            showErrorSnackBar("You dont have enough money")
+
+                        } else {
+                            mUser.money=mUser.money-20
+                            API().updateMoney(mUser){}
+                            if (bitmap != null) {
+                                if (data == 1) {
+                                    detectmodel1("model") { dieasename ->
+                                        doctorsListDialog(dieasename)
+                                    }
+                                }
+                                if (data == 2) {
+                                    detectmodel2("TumorModel") { dieasename ->
+                                        Toast.makeText(this, dieasename, Toast.LENGTH_SHORT).show()
+                                        doctorsListDialog(dieasename)
+
+                                    }
+                                }
+                                //doctorsListDialog()
+                            }
+                        }
+                        hideProgressDialog()
+                    }
+
+                }catch (e:Exception){
+                    showProgressDialog("Something went wrong")
+                    hideProgressDialog()
+                }
+            }
         }
         upload.setOnClickListener {
             var intent:Intent= Intent()
@@ -61,12 +92,7 @@ class DieaseDetectionActivity : AppCompatActivity() {
             startActivityForResult(intent,100)
 
         }
-
-
-
-
     }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode==100){
@@ -76,13 +102,6 @@ class DieaseDetectionActivity : AppCompatActivity() {
         }
 
     }
-    /**
-     * A function to remove the text and set the label color to the TextView.
-     */
-    private fun setColor() {
-        Toast.makeText(this,"clicked",Toast.LENGTH_LONG).show()
-    }
-
     /**
      * A function to add some static label colors in the list.
      */
@@ -107,8 +126,6 @@ class DieaseDetectionActivity : AppCompatActivity() {
 
             }
         }
-
-
     }
     fun opendilogwindow(doctorList:ArrayList<Doctor>,diease: String){
         var msg="You have affected by ${diease}, Here's is the list of preferrable Doctor "
@@ -121,9 +138,6 @@ class DieaseDetectionActivity : AppCompatActivity() {
         if(doctorList.size==0){
             nodoctors.visibility=View.VISIBLE
         }
-
-
-
     }
     fun detectmodel1(modelname: String, callback: (String) -> Unit) {
         // image processor
@@ -135,7 +149,7 @@ class DieaseDetectionActivity : AppCompatActivity() {
         tensorImage = imageProcessor.process(tensorImage)
 
         // val model = Model.newInstance(this)
-        val modelName = modelname + ".tflite"
+        val modelName = "model.tflite"
         val modelFileDescriptor = assets.openFd(modelName)
         val model =
             Interpreter(
@@ -151,7 +165,6 @@ class DieaseDetectionActivity : AppCompatActivity() {
         // Prepare input buffer.
         val inputBuffer = TensorBuffer.createFixedSize(intArrayOf(1, 256, 256, 3), DataType.FLOAT32)
         inputBuffer.loadBuffer(tensorImage.buffer)
-
         // Prepare output buffer.
         val outputBuffer = TensorBuffer.createFixedSize(intArrayOf(1, 256), DataType.FLOAT32)
 
@@ -165,15 +178,15 @@ class DieaseDetectionActivity : AppCompatActivity() {
         model.close()
 
 
-        if (outputFeature0[0] >= outputFeature0[1]) {
+        if (outputFeature0[0] > outputFeature0[1]) {
 
             callback("Normal")
-            // Toast.makeText(this, "Normal", Toast.LENGTH_SHORT).show()
+             Toast.makeText(this, "Normal", Toast.LENGTH_SHORT).show()
         } else {
 
             callback("Phenuomia")
 
-            //Toast.makeText(this, "Phenuomia", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Phenuomia", Toast.LENGTH_LONG).show()
         }
 
         // Releases model resources if no longer used.
@@ -189,7 +202,7 @@ class DieaseDetectionActivity : AppCompatActivity() {
         tensorImage = imageProcessor.process(tensorImage)
 
         // val model = Model.newInstance(this)
-        val modelName = modelname + ".tflite"
+        val modelName = "TumorModel.tflite"
         val modelFileDescriptor = assets.openFd(modelName)
         val model =
             Interpreter(
@@ -213,13 +226,13 @@ class DieaseDetectionActivity : AppCompatActivity() {
         model.run(inputBuffer.buffer, outputBuffer.buffer)
 
         // Get the output as an array.
-        val outputFeature0 = outputBuffer.floatArray
+        val outputFeature0 = outputBuffer.intArray
 
         // Releases model resources if no longer used.
         model.close()
 
 
-        if (outputFeature0[0] >= outputFeature0[1]) {
+        if (outputFeature0[0] > outputFeature0[1]) {
 
             callback("Normal")
             // Toast.makeText(this, "Normal", Toast.LENGTH_SHORT).show()

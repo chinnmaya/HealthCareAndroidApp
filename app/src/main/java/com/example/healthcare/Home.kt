@@ -2,10 +2,11 @@ package com.example.healthcare
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,11 +14,14 @@ import android.widget.AdapterView
 import android.widget.GridView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
 import com.example.healthcare.APICalls.API
+import com.example.healthcare.Activity.ClincVisitActivity
 import com.example.healthcare.Activity.DieaseDetectionActivity
 import com.example.healthcare.adapter.GridLayoutAdapter
 import com.example.healthcare.fragments.Doctorprofile
 import com.example.healthcare.models.Doctor
+import com.example.healthcare.models.User
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.dialog_progress.*
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -37,6 +41,8 @@ private var gridAdapter:GridLayoutAdapter?=null
  * create an instance of this fragment.
  */
 class Home : Fragment() {
+
+    private lateinit var mSharedPrefernces:SharedPreferences
     private lateinit var mProgressDialog: Dialog
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -66,18 +72,44 @@ class Home : Fragment() {
         mProgressDialog.dismiss()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
+        //val email = arguments?.getString()
+        mSharedPrefernces = requireActivity().getSharedPreferences("user", Context.MODE_PRIVATE)
+        var email=mSharedPrefernces.getString("email","")
 
 
-        showProgressDialog("wait")
+        if (email != null) {
+            API().getUserbyId(email){User->
+                if(User!=null){
+
+                    name.setText(User.name+" \uD83D\uDE0A")
+                    userMoney.setText(User.money.toString())
+
+                }
+
+
+
+            }
+        }
+
+
+        Toast.makeText(context,email+"mil",Toast.LENGTH_SHORT).show()
+
+
+
+
+
+
+
+        showProgressDialog("wait....")
+
 
         API().getdoctorslist(requireContext()) { doctorlist ->
             if (doctorlist != null) {
@@ -98,11 +130,14 @@ class Home : Fragment() {
                     fragment.arguments = bundle
                     changefragment(fragment)
                 }
+                hideProgressDialog()
 
             } else {
+                hideProgressDialog()
                 Toast.makeText(context, "Error retrieving doctors list", Toast.LENGTH_SHORT).show()
             }
         }
+
 
 
         return view
@@ -140,13 +175,18 @@ class Home : Fragment() {
         super.onViewCreated(view, savedInstanceState)
        // BaseActivity().showProgressDialog("wait")
 
+
         wissh()
         //showProgressDialog("wait")
 
        // hideProgressDialog()
         //Clicn visit
         ll_clicn.setOnClickListener {
+
             Toast.makeText(context,"Click",Toast.LENGTH_SHORT).show()
+            val intent = Intent(activity, ClincVisitActivity::class.java)
+
+            startActivity(intent)
         }
        // val employelist=Constants.getdiseaseList()
       //  val fragmentManager = requireActivity().supportFragmentManager
@@ -201,8 +241,11 @@ class Home : Fragment() {
     //setting the wish
     @RequiresApi(Build.VERSION_CODES.O)
     fun wissh(){
+       // Toast.makeText(context,"enter",Toast.LENGTH_SHORT).show()
         val currentTime = LocalTime.now()
         val hour = currentTime.hour
+
+
 
         if (hour in 6..11) {
             wish.setText("Good morning\uD83C\uDF1E !!! ")
@@ -215,7 +258,8 @@ class Home : Fragment() {
 
         }
         else {
-            println("Good night\uD83C\uDF03!!!")
+            wish.setText("Good night\uD83C\uDF03!!!")
+            println()
         }
     }
 

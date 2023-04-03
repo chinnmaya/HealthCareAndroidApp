@@ -56,7 +56,7 @@ class LogInActivity : BaseActivity() {
         val email: String = et_email.text.toString().trim { it <= ' ' }
         val password: String = et_password.text.toString().trim { it <= ' ' }
         if(validateForm(email,password)){
-            val user=User(email,"",password)
+            val user=User(email,"",password,0)
             showProgressDialog("Please wait......")
             API().Login(user,this@LogInActivity)
 
@@ -81,10 +81,12 @@ class LogInActivity : BaseActivity() {
         val editor=mSharedPrefernces.edit()
         editor.putString("email",email)
         editor.apply()
-
-
-        val intent=Intent(this,HomeActivity::class.java)
+        val intent = Intent(this, HomeActivity::class.java)
+        //intent.putExtra("email", email)
         startActivity(intent)
+
+
+
         finish()
 
 

@@ -36,6 +36,7 @@
                 android:text="Click the above Image to upload MRI/Xray report"/>
         </LinearLayout>
         <Button
+            android:foreground="?attr/selectableItemBackground"
             android:layout_gravity="center"
             android:background="@drawable/btn_backgrd"
             android:textColor="@color/white"
@@ -47,5 +48,12 @@
             android:text="Click to Predict"
 
             />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/nb"
+            android:gravity="center"
+            android:textColor="#FF0000"/>
     </LinearLayout>
 </ScrollView>

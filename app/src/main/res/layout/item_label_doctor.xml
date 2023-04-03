@@ -52,12 +52,12 @@
                android:layout_weight="1"
                android:id="@+id/demail"
                android:src="@drawable/ic_email_black"/>
-           <ImageView
+         <!--  <ImageView
                android:layout_weight="0.5"
                android:layout_width="50dp"
                android:id="@+id/dprofile"
                android:layout_height="50dp"
-               android:src="@drawable/ic_profile"/>
+               android:src="@drawable/ic_profile"/>-->
 
 
        </LinearLayout>

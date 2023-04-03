@@ -61,7 +61,7 @@ class SignUpActivity : BaseActivity() {
         val password: String = et_password.text.toString().trim { it <= ' ' }
         if(validateForm(name,email,password)){
             //API CALL STUFFS
-            val user=User(email,name,password)
+            val user=User(email,name,password,0)
             showProgressDialog("Please wait....")
             API().registerUser(user,this@SignUpActivity)
 
