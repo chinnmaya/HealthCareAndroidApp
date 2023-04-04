@@ -234,7 +234,7 @@ class API :BaseActivity(){
         })
 
     }
-    fun updateDoctorSlot(doctor: Doctor,Activity:ClicnVisitBookingActivity,slot:String,callback: (Void) -> Unit){
+    fun updateDoctorSlot(doctor: Doctor,Activity:ClicnVisitBookingActivity,slot:String,email:String,callback: (Void) -> Unit){
         val retrofit: Retrofit = Retrofit.Builder().baseUrl(Constants.BASE_URL).addConverterFactory(
             GsonConverterFactory.create()).build()
         val service: ApiService =retrofit.create<ApiService>(ApiService::class.java)
@@ -246,13 +246,15 @@ class API :BaseActivity(){
                 if(response!!.isSuccess){
                     val result=response.body()
                     if(result.equals("sucesss")){
-                        callback
+                        sendEmail(email,slot){}
                         Activity.getdoctorSlot(doctor.email)
+                        callback
+
 
                         // activity.loggedinsucess(user.email)
 
                     }else{
-                         Toast.makeText(Activity,"fail",Toast.LENGTH_SHORT).show()
+                         Toast.makeText(Activity,"fail1",Toast.LENGTH_SHORT).show()
                     }
 
                 }
@@ -260,7 +262,44 @@ class API :BaseActivity(){
             }
 
             override fun onFailure(t: Throwable?) {
-                Toast.makeText(Activity,"fail",Toast.LENGTH_SHORT).show()
+                Toast.makeText(Activity,t.toString(),Toast.LENGTH_SHORT).show()
+                //hideProgressDialog()
+                // BaseActivity().hideProgressDialog()
+                //Toast.makeText(activity,"Something went Wrong",Toast.LENGTH_LONG).show()
+
+            }
+
+        })
+    }
+
+    fun sendEmail(email:String,slot:String,callback: (Void) -> Unit){
+        val retrofit: Retrofit = Retrofit.Builder().baseUrl(Constants.BASE_URL).addConverterFactory(
+            GsonConverterFactory.create()).build()
+        val service: ApiService =retrofit.create<ApiService>(ApiService::class.java)
+        val call: Call<String> = service.sendEmail(email,slot)
+        call.enqueue(object : Callback<String> {
+            override fun onResponse(response: Response<String>?, retrofit: Retrofit?) {
+                //print(response?.body().toString())
+                //activity.sigin()
+                if(response!!.isSuccess){
+                    val result=response.body()
+                    if(result.equals("sucesss")){
+                        //Activity.getdoctorSlot(doctor.email)
+                        callback
+
+
+                        // activity.loggedinsucess(user.email)
+
+                    }else{
+                        //Toast.makeText(Activity,"fail1",Toast.LENGTH_SHORT).show()
+                    }
+
+                }
+
+            }
+
+            override fun onFailure(t: Throwable?) {
+                //Toast.makeText(Activity,t.toString(),Toast.LENGTH_SHORT).show()
                 //hideProgressDialog()
                 // BaseActivity().hideProgressDialog()
                 //Toast.makeText(activity,"Something went Wrong",Toast.LENGTH_LONG).show()

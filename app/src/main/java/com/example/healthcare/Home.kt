@@ -32,6 +32,7 @@ import java.time.LocalTime
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 private var gridView:GridView?=null
+
 private var arrayList:ArrayList<Doctor>?=null
 private var gridAdapter:GridLayoutAdapter?=null
 
@@ -44,6 +45,7 @@ class Home : Fragment() {
 
     private lateinit var mSharedPrefernces:SharedPreferences
     private lateinit var mProgressDialog: Dialog
+    var email:String?=null
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -72,6 +74,24 @@ class Home : Fragment() {
         mProgressDialog.dismiss()
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (email != null) {
+            API().getUserbyId(email!!){User->
+                if(User!=null){
+
+                    name.setText(User.name+" \uD83D\uDE0A")
+                    userMoney.setText(User.money.toString())
+
+                }
+
+
+
+            }
+        }
+
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
@@ -82,11 +102,11 @@ class Home : Fragment() {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         //val email = arguments?.getString()
         mSharedPrefernces = requireActivity().getSharedPreferences("user", Context.MODE_PRIVATE)
-        var email=mSharedPrefernces.getString("email","")
+        email=mSharedPrefernces.getString("email","")
 
 
         if (email != null) {
-            API().getUserbyId(email){User->
+            API().getUserbyId(email!!){User->
                 if(User!=null){
 
                     name.setText(User.name+" \uD83D\uDE0A")

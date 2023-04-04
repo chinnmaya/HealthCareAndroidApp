@@ -39,4 +39,9 @@ interface ApiService {
     ):Call<Doctor>
     @POST("/updatedoctorslot")
     fun updateDoctorSlot(@Body doctor: Doctor):Call<String>
+    @GET("/sendEmail")
+    fun sendEmail(
+        @Query("email") email:String,
+        @Query("slot") slot:String,
+    ):Call<String>
 }
