@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment
 import com.example.healthcare.APICalls.API
 import com.example.healthcare.Activity.ClincVisitActivity
 import com.example.healthcare.Activity.DieaseDetectionActivity
+import com.example.healthcare.Activity.HomeVisitActivity
 import com.example.healthcare.adapter.GridLayoutAdapter
 import com.example.healthcare.fragments.Doctorprofile
 import com.example.healthcare.models.Doctor
@@ -207,6 +208,13 @@ class Home : Fragment() {
             val intent = Intent(activity, ClincVisitActivity::class.java)
 
             startActivity(intent)
+        }
+        ll_home.setOnClickListener {
+            Toast.makeText(context,"Click",Toast.LENGTH_SHORT).show()
+            val intent = Intent(activity, HomeVisitActivity::class.java)
+
+            startActivity(intent)
+
         }
        // val employelist=Constants.getdiseaseList()
       //  val fragmentManager = requireActivity().supportFragmentManager

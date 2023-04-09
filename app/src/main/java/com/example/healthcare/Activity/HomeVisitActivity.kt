@@ -3,35 +3,29 @@ package com.example.healthcare.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Layout
 import android.view.Menu
-import android.view.View
-import android.widget.*
-import androidx.appcompat.app.AlertDialog
+import android.widget.AdapterView
+import android.widget.GridView
+import android.widget.Toast
 import com.example.healthcare.APICalls.API
 import com.example.healthcare.R
 import com.example.healthcare.adapter.GridLayoutAdapter
-import com.example.healthcare.fragments.Doctorprofile
 import com.example.healthcare.models.Doctor
 import com.example.healthcare.utils.BaseActivity
-import kotlinx.android.synthetic.main.activity_clinc_visit.*
+import kotlinx.android.synthetic.main.activity_home_visit.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ClincVisitActivity : BaseActivity() {
-    private var gridView: GridView ? = null
-    // findViewById<GridView>(R.id.idGVdoctor)
+class HomeVisitActivity : BaseActivity() {
     private var docList:ArrayList<Doctor>?=null
     private var tmpList:ArrayList<Doctor>?=null
+    private var gridView: GridView ? = null
     private var gridAdapter: GridLayoutAdapter?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_clinc_visit)
-       setupActionBar()
-
-
-
-
+        setContentView(R.layout.activity_home_visit)
+        setupActionBar()
         docList = ArrayList()
         tmpList = ArrayList()
         fetchdoctorlist()
@@ -39,47 +33,57 @@ class ClincVisitActivity : BaseActivity() {
     }
     private fun fetchdoctorlist(){
         showProgressDialog("Please Wait..")
-
-        API().getdoctorslistbyclicnvisit(this) { doctorlist ->
-            if (doctorlist != null) {
-                docList!!.addAll(doctorlist)
-                tmpList!!.addAll(doctorlist)
-                displaydoctors()
-
-            } else {
-                Toast.makeText(this, "Error retrieving doctors list", Toast.LENGTH_SHORT).show()
-            }
+        API().getdocotorlistbyhomeVist(){doctors->
+            docList!!.addAll(doctors)
+            tmpList!!.addAll(doctors)
+            displaydoctors()
+            hideProgressDialog()
         }
-
     }
     private fun displaydoctors(){
-        gridView=findViewById<GridView>(R.id.idGVdoctor)
-        hideProgressDialog()
+        if (docList!= null) {
+           // docList!!.addAll(doctorlist)
+            //tmpList!!.addAll(doctorlist)
+            gridView=findViewById<GridView>(R.id.idGVdoctor)
 
-        gridAdapter = GridLayoutAdapter(this, tmpList!!)
-        gridView!!.adapter = gridAdapter
+            gridAdapter = GridLayoutAdapter(this, tmpList!!)
+            gridView!!.adapter = gridAdapter
 
-        gridView!!.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-            // handle item click event
-            val doctor: Doctor = docList!!.get(position)
+            gridView!!.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+                // handle item click event
+                //val doctor: Doctor = doctorlist!!.get(position)
 
-            val intent = Intent(this, ClicnVisitBookingActivity::class.java)
-            intent.putExtra("doctor", doctor)
-            startActivity(intent)
-
-
+                //val intent = Intent(this, ClicnVisitBookingActivity::class.java)
+                //intent.putExtra("doctor", doctor)
+                //startActivity(intent)
 
 
-            // Toast.makeText(this, tmpList!!.size.toString(), Toast.LENGTH_SHORT).show()
+
+
+                // Toast.makeText(this, tmpList!!.size.toString(), Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(this, "Error retrieving doctors list", Toast.LENGTH_SHORT).show()
         }
     }
+    private fun setupActionBar() {
 
+        setSupportActionBar(home_toolbar)
 
+        val actionBar = supportActionBar
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_back)
+            actionBar.title = "Home Visit"
+        }
+
+        home_toolbar.setNavigationOnClickListener { onBackPressed() }
+    }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_item,menu)
         val item=menu?.findItem(R.id.ic_search)
         val searchView = item?.actionView as androidx.appcompat.widget.SearchView
-       // val searchView=item?.actionView as SearchView
+        // val searchView=item?.actionView as SearchView
 
         searchView.setOnQueryTextListener(object :androidx.appcompat.widget.SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(p0: String?): Boolean {
@@ -114,18 +118,5 @@ class ClincVisitActivity : BaseActivity() {
         })
         return super.onCreateOptionsMenu(menu)
 
-    }
-    private fun setupActionBar() {
-
-        setSupportActionBar(clicn_toolbar)
-
-        val actionBar = supportActionBar
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true)
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_back)
-            actionBar.title = "Clinc Visit"
-        }
-
-        clicn_toolbar.setNavigationOnClickListener { onBackPressed() }
     }
 }

@@ -122,6 +122,7 @@
                 android:layout_height="150dp"
                 android:elevation="10dp">
                 <LinearLayout
+                    android:id="@+id/ll_home"
                     android:foreground="?attr/selectableItemBackground"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

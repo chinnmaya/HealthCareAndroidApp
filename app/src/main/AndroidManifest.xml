@@ -15,6 +15,11 @@
         android:supportsRtl="true"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.HomeVisitActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".Activity.ClicnVisitBookingActivity"
             android:exported="true"
             android:screenOrientation="portrait"

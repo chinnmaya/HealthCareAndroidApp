@@ -16,6 +16,8 @@ interface ApiService {
     fun createuser(@Body user: User):Call<Result>
     @POST("/signin")
     fun loginn(@Body user: User):Call<Result>
+    @GET("/getdoctorlistgetdoctorlistbyclicnvisit")
+    fun getdoctorlistbyclicncvisit():Call<List<Doctor>>
     @GET("/getdoctorlist")
     fun getdoctorlist():Call<List<Doctor>>
     @GET("/getdoctorbycategory")
@@ -44,4 +46,6 @@ interface ApiService {
         @Query("email") email:String,
         @Query("slot") slot:String,
     ):Call<String>
+    @GET("/getDoctorsByHomeVisit")
+    fun getDoctorsByHomeVisit():Call<List<Doctor>>
 }

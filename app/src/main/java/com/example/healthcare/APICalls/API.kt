@@ -87,6 +87,25 @@ class API :BaseActivity(){
         })
     }
     //gettting dotor list
+    fun getdoctorslistbyclicnvisit(context:Context, callback: (ArrayList<Doctor>) -> Unit) {
+        val retrofit: Retrofit = Retrofit.Builder().baseUrl(Constants.BASE_URL).addConverterFactory(
+            GsonConverterFactory.create()).build()
+        val service: ApiService = retrofit.create<ApiService>(ApiService::class.java)
+        val call: Call<List<Doctor>> = service.getdoctorlistbyclicncvisit()
+
+        call.enqueue(object : Callback<List<Doctor>> {
+            override fun onResponse(response: Response<List<Doctor>>?, retrofit: Retrofit?) {
+                if(response!!.isSuccess){
+                    val doctorlist: ArrayList<Doctor> = response.body() as ArrayList<Doctor>
+                    callback(doctorlist)
+                }
+            }
+
+            override fun onFailure(t: Throwable?) {
+                // handle failure
+            }
+        })
+    }
     fun getdoctorslist(context:Context, callback: (ArrayList<Doctor>) -> Unit) {
         val retrofit: Retrofit = Retrofit.Builder().baseUrl(Constants.BASE_URL).addConverterFactory(
             GsonConverterFactory.create()).build()
@@ -307,6 +326,27 @@ class API :BaseActivity(){
             }
 
         })
+    }
+    fun getdocotorlistbyhomeVist(callback: (ArrayList<Doctor>) -> Unit){
+        val retrofit: Retrofit = Retrofit.Builder().baseUrl(Constants.BASE_URL).addConverterFactory(
+            GsonConverterFactory.create()).build()
+        val service: ApiService = retrofit.create<ApiService>(ApiService::class.java)
+        val call: Call<List<Doctor>> = service.getDoctorsByHomeVisit()
+
+        call.enqueue(object : Callback<List<Doctor>> {
+            override fun onResponse(response: Response<List<Doctor>>?, retrofit: Retrofit?) {
+                if(response!!.isSuccess){
+                    val doctorlist: ArrayList<Doctor> = response.body() as ArrayList<Doctor>
+                    callback(doctorlist)
+
+                }
+            }
+
+            override fun onFailure(t: Throwable?) {
+                // handle failure
+            }
+        })
+
     }
 
 }
