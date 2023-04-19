@@ -1,13 +1,10 @@
 package com.example.healthcare.APICalls
 
-import android.app.Activity
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
-import com.example.healthcare.Activity.ClicnVisitBookingActivity
+import com.example.healthcare.Activity.BookingActivity
 import com.example.healthcare.Activity.LogInActivity
 import com.example.healthcare.Activity.SignUpActivity
-import com.example.healthcare.Home
 import com.example.healthcare.models.Doctor
 import com.example.healthcare.models.Result
 import com.example.healthcare.models.User
@@ -253,7 +250,7 @@ class API :BaseActivity(){
         })
 
     }
-    fun updateDoctorSlot(doctor: Doctor,Activity:ClicnVisitBookingActivity,slot:String,email:String,callback: (Void) -> Unit){
+    fun updateDoctorSlot(doctor: Doctor, Activity:BookingActivity, slot:String, email:String, callback: (Void) -> Unit){
         val retrofit: Retrofit = Retrofit.Builder().baseUrl(Constants.BASE_URL).addConverterFactory(
             GsonConverterFactory.create()).build()
         val service: ApiService =retrofit.create<ApiService>(ApiService::class.java)
@@ -264,8 +261,12 @@ class API :BaseActivity(){
                 //activity.sigin()
                 if(response!!.isSuccess){
                     val result=response.body()
-                    if(result.equals("sucesss")){
-                        sendEmail(email,slot){}
+                    if(result.equals("sucesss") ){
+                        if(doctor.ishomvisit==false){
+                            sendEmail(email,slot){}
+
+                        }
+
                         Activity.getdoctorSlot(doctor.email)
                         callback
 
@@ -347,6 +348,42 @@ class API :BaseActivity(){
             }
         })
 
+    }
+    fun sendEmailHomeVisit(docemail:String,slot:String,address:String,useremail:String,callback: (Void) -> Unit){
+        val retrofit: Retrofit = Retrofit.Builder().baseUrl(Constants.BASE_URL).addConverterFactory(
+            GsonConverterFactory.create()).build()
+        val service: ApiService =retrofit.create<ApiService>(ApiService::class.java)
+        val call: Call<String> = service.sendmailHomeVisit(docemail,useremail,slot,address)
+        call.enqueue(object : Callback<String> {
+            override fun onResponse(response: Response<String>?, retrofit: Retrofit?) {
+                //print(response?.body().toString())
+                //activity.sigin()
+                if(response!!.isSuccess){
+                    val result=response.body()
+                    if(result.equals("sucesss")){
+                        //Activity.getdoctorSlot(doctor.email)
+                        callback
+
+
+                        // activity.loggedinsucess(user.email)
+
+                    }else{
+                        //Toast.makeText(Activity,"fail1",Toast.LENGTH_SHORT).show()
+                    }
+
+                }
+
+            }
+
+            override fun onFailure(t: Throwable?) {
+                //Toast.makeText(Activity,t.toString(),Toast.LENGTH_SHORT).show()
+                //hideProgressDialog()
+                // BaseActivity().hideProgressDialog()
+                //Toast.makeText(activity,"Something went Wrong",Toast.LENGTH_LONG).show()
+
+            }
+
+        })
     }
 
 }

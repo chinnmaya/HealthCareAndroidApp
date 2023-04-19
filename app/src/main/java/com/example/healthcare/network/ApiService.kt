@@ -48,4 +48,10 @@ interface ApiService {
     ):Call<String>
     @GET("/getDoctorsByHomeVisit")
     fun getDoctorsByHomeVisit():Call<List<Doctor>>
+    @GET("/SendMailHomeVisit")
+    fun sendmailHomeVisit(@Query("emaildoc") emaildoc:String,
+                          @Query("emailuser") emailuser:String,
+                          @Query("slot") slot:String,
+                          @Query("address") address:String
+    ):Call<String>
 }

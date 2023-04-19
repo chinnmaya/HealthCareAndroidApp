@@ -1,17 +1,12 @@
 package com.example.healthcare.Activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Layout
 import android.view.Menu
-import android.view.View
 import android.widget.*
-import androidx.appcompat.app.AlertDialog
 import com.example.healthcare.APICalls.API
 import com.example.healthcare.R
 import com.example.healthcare.adapter.GridLayoutAdapter
-import com.example.healthcare.fragments.Doctorprofile
 import com.example.healthcare.models.Doctor
 import com.example.healthcare.utils.BaseActivity
 import kotlinx.android.synthetic.main.activity_clinc_visit.*
@@ -63,8 +58,9 @@ class ClincVisitActivity : BaseActivity() {
             // handle item click event
             val doctor: Doctor = docList!!.get(position)
 
-            val intent = Intent(this, ClicnVisitBookingActivity::class.java)
+            val intent = Intent(this, BookingActivity::class.java)
             intent.putExtra("doctor", doctor)
+
             startActivity(intent)
 
 

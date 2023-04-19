@@ -12,6 +12,7 @@ import com.example.healthcare.R
 import com.example.healthcare.adapter.GridLayoutAdapter
 import com.example.healthcare.models.Doctor
 import com.example.healthcare.utils.BaseActivity
+import com.example.healthcare.utils.Constants.doctorlist
 import kotlinx.android.synthetic.main.activity_home_visit.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -51,11 +52,11 @@ class HomeVisitActivity : BaseActivity() {
 
             gridView!!.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
                 // handle item click event
-                //val doctor: Doctor = doctorlist!!.get(position)
+                val doctor: Doctor = tmpList!!.get(position)
 
-                //val intent = Intent(this, ClicnVisitBookingActivity::class.java)
-                //intent.putExtra("doctor", doctor)
-                //startActivity(intent)
+                val intent = Intent(this, BookingActivity::class.java)
+                intent.putExtra("doctor", doctor)
+                startActivity(intent)
 
 
 

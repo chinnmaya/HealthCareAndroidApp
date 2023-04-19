@@ -2,16 +2,15 @@ package com.example.healthcare
 
 import android.app.Activity
 import android.content.Intent
+import android.os.AsyncTask
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import com.example.healthcare.APICalls.API
 import com.example.healthcare.Activity.PaymentActivity
 import com.example.healthcare.models.User
 import com.example.healthcare.utils.Constants
@@ -33,6 +32,8 @@ class Payments : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private var muser:User?=null
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,10 +50,21 @@ class Payments : Fragment() {
         // Inflate the layout for this fragment
         //startActivity(Intent(context,PaymentActivity::class.java))
         val view=inflater.inflate(R.layout.fragment_payments, container, false)
+        progressBar = view.findViewById(R.id.progressBar)
+
         val user = arguments?.getSerializable(Constants.PAYMENTUSER) as User
-        val tvMoney=view.findViewById<TextView>(R.id.tvMoney)
-        tvMoney.setText(user.money.toString())
-        //
+        progressBar.visibility = View.VISIBLE
+
+        API().getUserbyId(user.email){user->
+            muser=user
+            val tvMoney=view.findViewById<TextView>(R.id.tvMoney)
+            tvMoney.setText(muser!!.money.toString())
+            progressBar.visibility = View.GONE
+
+        }
+
+
+
         val bundle = Bundle()
         val addmoney = view.findViewById<Button>(R.id.addmoney)
         addmoney.setOnClickListener {
@@ -66,7 +78,7 @@ class Payments : Fragment() {
                 bundle.putString(Constants.AMOUNT, amount)
                 val intent = Intent(activity, PaymentActivity::class.java)
                 intent.putExtras(bundle)
-                intent.putExtra("pass", user)
+                intent.putExtra("pass", muser)
 
                 startActivity(intent)
             }
@@ -100,4 +112,5 @@ class Payments : Fragment() {
                 }
             }
     }
+
 }

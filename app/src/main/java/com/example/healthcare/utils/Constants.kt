@@ -5,9 +5,10 @@ import com.example.healthcare.R
 import com.example.healthcare.models.Doctor
 
 object Constants {
-     const val BASE_URL="http://192.168.23.174:9094"
+     const val BASE_URL="https://healthcare-production-3ccf.up.railway.app"
      const val AMOUNT="amount"
      const val PAYMENTUSER="paymentuser"
+     const val TYPE="Type"
      fun getdiseaseList():ArrayList<String>{
           // create an arraylist of type employee class
           val dieaselist=ArrayList<String>()
